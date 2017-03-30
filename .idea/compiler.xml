@@ -9,8 +9,8 @@
         <module name="twitter" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="twitter" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="twitter" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
