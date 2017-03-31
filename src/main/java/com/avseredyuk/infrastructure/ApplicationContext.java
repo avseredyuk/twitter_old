@@ -2,6 +2,7 @@ package com.avseredyuk.infrastructure;
 
 import com.avseredyuk.repository.PostConstructBean;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
@@ -21,16 +22,10 @@ public class ApplicationContext implements Context {
     @Override
     public <T> T getBean(String beanName) throws Exception {
         T bean = (T) beans.get(beanName);
-
         if (bean != null) {
             return bean;
         }
-
-        Class<?> clazz = config.getImpl(beanName);
-        if (clazz == null) {
-            throw new RuntimeException("Bean not found");
-        }
-        bean = (T) clazz.newInstance();
+        bean = instantiate(beanName);
 
         callInitMethod(bean);
         callPostConstructBean(bean);
@@ -38,6 +33,22 @@ public class ApplicationContext implements Context {
         bean = createProxy(bean);
 
         beans.put(beanName, bean);
+        return bean;
+    }
+
+    private <T> T instantiate(String beanName) throws Exception{
+        Class<?> clazz = config.getImpl(beanName);
+        if (clazz == null) {
+            throw new RuntimeException("Bean not found");
+        }
+
+        Constructor[] constructors = clazz.getConstructors();
+        for (Constructor constructor : constructors) {
+            Class[] paramTypes = constructor.getParameterTypes();
+
+        }
+
+        T bean = (T) clazz.newInstance();
         return bean;
     }
 

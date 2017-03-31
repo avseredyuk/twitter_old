@@ -1,5 +1,6 @@
 package com.avseredyuk.infrastructure;
 
+import com.avseredyuk.domain.TweetService;
 import com.avseredyuk.repository.MemoryTweetRepository;
 
 import java.util.HashMap;
@@ -13,8 +14,8 @@ public class JavaConfig implements Config {
 
     {
         classes.put("tweetRepo", MemoryTweetRepository.class);
+        classes.put("tweetService", TweetService.class);
     }
-
 
     @Override
     public Class<?> getImpl(String name) {
