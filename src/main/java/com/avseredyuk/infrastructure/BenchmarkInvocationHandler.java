@@ -25,19 +25,21 @@ public class BenchmarkInvocationHandler implements InvocationHandler {
         Method originalMethod = originalObject.getClass().getMethod(methodName, paramTypes);
 
         if (originalMethod.isAnnotationPresent(Benchmark.class)) {
-            long startTime = System.currentTimeMillis();
-            Object object = method.invoke(originalObject, args);
-            long endTime = System.currentTimeMillis();
-            System.out.println(String.format("Benchmark of method %s.%s%s: %d",
-                    originalObject.getClass().getName(),
-                    methodName,
-                    Stream.of(paramTypes)
-                            .map(Class::getName)
-                            .collect(Collectors.joining(", ","(",")")),
-                    endTime - startTime));
-            return object;
-        } else {
-            return method.invoke(originalObject, args);
+            Benchmark benchmark = originalMethod.getAnnotation(Benchmark.class);
+            if (benchmark.active()) {
+                long startTime = System.currentTimeMillis();
+                Object object = method.invoke(originalObject, args);
+                long endTime = System.currentTimeMillis();
+                System.out.println(String.format("Benchmark of method %s.%s%s: %d",
+                        originalObject.getClass().getName(),
+                        methodName,
+                        Stream.of(paramTypes)
+                                .map(Class::getName)
+                                .collect(Collectors.joining(", ", "(", ")")),
+                        endTime - startTime));
+                return object;
+            }
         }
+        return method.invoke(originalObject, args);
     }
 }

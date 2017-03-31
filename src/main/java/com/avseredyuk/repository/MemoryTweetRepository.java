@@ -34,7 +34,7 @@ public class MemoryTweetRepository implements TweetRepository {
         tweets.add(tweet);
     }
 
-    @Benchmark
+    @Benchmark(active = false)
     public Iterable<Tweet> findAll() {
 
         try {
