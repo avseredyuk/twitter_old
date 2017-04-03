@@ -31,7 +31,7 @@ public class ApplicationContext implements Context {
 
         BeanBuilder builder = new BeanBuilder(config.getImpl(beanName), beanName);
         builder.createBean();
-        builder.callPostCreateMethod();
+        builder.callPostConstructMethod();
         builder.callInitMethod();
         builder.createBeanProxy();
         bean = (T) builder.build();
@@ -89,7 +89,7 @@ public class ApplicationContext implements Context {
             bean = clazz.newInstance();
         }
 
-        public void callPostCreateMethod() throws Exception {
+        public void callPostConstructMethod() throws Exception {
             for (Method method : clazz.getMethods()) {
                 if (method.isAnnotationPresent(PostConstructBean.class)) {
                     method.invoke(bean);
@@ -114,7 +114,7 @@ public class ApplicationContext implements Context {
                     bean = Proxy.newProxyInstance(bean.getClass().getClassLoader(),
                             bean.getClass().getInterfaces(),
                             new BenchmarkInvocationHandler(bean));
-                    break;
+                    return;
                 }
             }
         }
