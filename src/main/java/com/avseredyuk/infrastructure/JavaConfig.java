@@ -1,8 +1,10 @@
 package com.avseredyuk.infrastructure;
 
 import com.avseredyuk.domain.TweetService;
+import com.avseredyuk.domain.User;
 import com.avseredyuk.repository.MemoryTweetRepository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,12 +15,18 @@ public class JavaConfig implements Config {
     private final Map<String, Class<?>> classes = new HashMap<>();
 
     {
-        classes.put("tweetRepo", MemoryTweetRepository.class);
+        classes.put("tweetRepository", MemoryTweetRepository.class);
         classes.put("tweetService", TweetService.class);
+        classes.put("userAdmin", User.class);
     }
 
     @Override
     public Class<?> getImpl(String name) {
         return classes.get(name);
+    }
+
+    @Override
+    public Collection<Class<?>> getList() {
+        return classes.values();
     }
 }

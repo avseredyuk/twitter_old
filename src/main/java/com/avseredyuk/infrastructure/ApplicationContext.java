@@ -1,12 +1,18 @@
 package com.avseredyuk.infrastructure;
 
+import com.avseredyuk.repository.Benchmark;
+import com.avseredyuk.repository.MemoryTweetRepository;
 import com.avseredyuk.repository.PostConstructBean;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Anton_Serediuk on 3/30/2017.
@@ -42,21 +48,51 @@ public class ApplicationContext implements Context {
             throw new RuntimeException("Bean not found");
         }
 
+        Collection<Class<?>> classesInConfig = config.getList();
         Constructor[] constructors = clazz.getConstructors();
+
         for (Constructor constructor : constructors) {
-            Class[] paramTypes = constructor.getParameterTypes();
+            Class<?>[] paramClasses = constructor.getParameterTypes();
+            Object[] params = new Object[paramClasses.length];
+            int i = 0;
+            for (Class<?> paramClass : paramClasses) {
+                String paramClassName = paramClass.getSimpleName();
+                paramClassName = Character.toLowerCase(paramClassName.charAt(0)) +
+                        (paramClassName.length() > 1 ? paramClassName.substring(1) : "");
 
+                for (Class<?> cfgClass : classesInConfig) {
+                    if (paramClass.isAssignableFrom(cfgClass)) {
+                        params[i] = getBean(paramClassName);
+                        i++;
+                    }
+                }
+
+            }
+            if (i < params.length) {
+                continue;
+            }
+            if (params.length > 0) {
+                params = Stream.of(params).map(o -> Proxy.isProxyClass(o.getClass()) ?
+                        ((BenchmarkInvocationHandler) Proxy.getInvocationHandler(o)).getOriginalObject() : o)
+                        .toArray();
+                return (T) constructor.newInstance(params);
+            } else {
+                break;
+            }
         }
-
-        T bean = (T) clazz.newInstance();
-        return bean;
+        return (T) clazz.newInstance();
     }
 
     private <T> T createProxy(T bean) {
-        T newBean = (T) Proxy.newProxyInstance(bean.getClass().getClassLoader(),
-                bean.getClass().getInterfaces(),
-                new BenchmarkInvocationHandler(bean));
-        return newBean;
+        Method[] methods = bean.getClass().getMethods();
+        for (Method method : methods) {
+            if (method.getAnnotations().length > 0) {
+                return (T) Proxy.newProxyInstance(bean.getClass().getClassLoader(),
+                        bean.getClass().getInterfaces(),
+                        new BenchmarkInvocationHandler(bean));
+            }
+        }
+        return bean;
     }
 
     private void callPostConstructBean(Object bean) throws Exception {

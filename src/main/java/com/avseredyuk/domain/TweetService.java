@@ -14,6 +14,7 @@ public class TweetService {
 
     public void doSomething() {
         try {
+            System.out.println("Twitter service working...");
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();

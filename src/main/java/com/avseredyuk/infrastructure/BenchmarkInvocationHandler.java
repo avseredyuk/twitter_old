@@ -42,4 +42,8 @@ public class BenchmarkInvocationHandler implements InvocationHandler {
         }
         return method.invoke(originalObject, args);
     }
+
+    public Object getOriginalObject() {
+        return originalObject;
+    }
 }
