@@ -25,10 +25,10 @@ public class TwitterRunner
         TweetService tweetService = ctx.getBean("tweetService");
         tweetService.doSomething();
 
-        User user = ctx.getBean("userAdmin");
-        TweetRepository tweetRepository = ctx.getBean("tweetRepository");
-        tweetRepository.save(new Tweet(user, "supertext"));
-        tweetRepository.findAll().forEach(System.out::println);
+//        User user = ctx.getBean("userAdmin");
+//        TweetRepository tweetRepository = ctx.getBean("tweetRepository");
+//        tweetRepository.save(new Tweet(user, "supertext"));
+//        tweetRepository.findAll().forEach(System.out::println);
 
     }
 }

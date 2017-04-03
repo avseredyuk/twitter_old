@@ -1,7 +1,6 @@
 package com.avseredyuk.infrastructure;
 
 import com.avseredyuk.repository.PostConstructBean;
-import com.avseredyuk.util.StringUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -29,7 +28,7 @@ public class ApplicationContext implements Context {
             return bean;
         }
 
-        BeanBuilder builder = new BeanBuilder(config.getImpl(beanName), beanName);
+        BeanBuilder builder = new BeanBuilder(config.getImpl(beanName));
         builder.createBean();
         builder.callPostConstructMethod();
         builder.callInitMethod();
@@ -42,14 +41,14 @@ public class ApplicationContext implements Context {
 
     public class BeanBuilder {
         private Class<?> clazz;
-        private String beanName;
         private Object bean;
 
-        public BeanBuilder(Class<?> clazz, String beanName) {
+        public BeanBuilder(Class<?> clazz) {
             this.clazz = clazz;
-            this.beanName = beanName;
         }
 
+        //todo bean w/o params & with params to methods
+        //todo hasConstructorWithParams
         public void createBean() throws Exception {
             if (clazz == null) {
                 throw new RuntimeException("Bean not found");
@@ -62,7 +61,7 @@ public class ApplicationContext implements Context {
                 Object[] params = new Object[paramClasses.length];
                 int i = 0;
                 for (Class<?> paramClass : paramClasses) {
-                    String paramClassName = StringUtil.firstLetterToLower(paramClass.getSimpleName());
+                    String paramClassName = getBeanNameByType(paramClass);
 
                     for (Class<?> cfgClass : classesInConfig) {
                         if (paramClass.isAssignableFrom(cfgClass)) {
@@ -87,6 +86,12 @@ public class ApplicationContext implements Context {
                 }
             }
             bean = clazz.newInstance();
+        }
+
+        private String getBeanNameByType(Class<?> paramClass) {
+            String result = paramClass.getSimpleName();
+            return Character.toLowerCase(result.charAt(0)) +
+                    (result.length() > 1 ? result.substring(1) : "");
         }
 
         public void callPostConstructMethod() throws Exception {

@@ -20,4 +20,5 @@ public class TweetService {
             e.printStackTrace();
         }
     }
+    //todo service.findall() & service.save()
 }
