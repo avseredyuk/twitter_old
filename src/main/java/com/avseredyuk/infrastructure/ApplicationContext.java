@@ -28,84 +28,99 @@ public class ApplicationContext implements Context {
         if (bean != null) {
             return bean;
         }
-        bean = instantiate(beanName);
 
-        callInitMethod(bean);
-        callPostConstructBean(bean);
-
-        bean = createProxy(bean);
+        BeanBuilder builder = new BeanBuilder(config.getImpl(beanName), beanName);
+        builder.createBean();
+        builder.callPostCreateMethod();
+        builder.callInitMethod();
+        builder.createBeanProxy();
+        bean = (T) builder.build();
 
         beans.put(beanName, bean);
         return bean;
     }
 
-    private <T> T instantiate(String beanName) throws Exception {
-        Class<?> clazz = config.getImpl(beanName);
-        if (clazz == null) {
-            throw new RuntimeException("Bean not found");
+    public class BeanBuilder {
+        private Class<?> clazz;
+        private String beanName;
+        private Object bean;
+
+        public BeanBuilder(Class<?> clazz, String beanName) {
+            this.clazz = clazz;
+            this.beanName = beanName;
         }
 
-        Collection<Class<?>> classesInConfig = config.getList();
-        Constructor[] constructors = clazz.getConstructors();
+        public void createBean() throws Exception {
+            if (clazz == null) {
+                throw new RuntimeException("Bean not found");
+            }
+            Collection<Class<?>> classesInConfig = config.getList();
+            Constructor[] constructors = clazz.getConstructors();
 
-        for (Constructor constructor : constructors) {
-            Class<?>[] paramClasses = constructor.getParameterTypes();
-            Object[] params = new Object[paramClasses.length];
-            int i = 0;
-            for (Class<?> paramClass : paramClasses) {
-                String paramClassName = StringUtil.firstLetterToLower(paramClass.getSimpleName());
+            for (Constructor constructor : constructors) {
+                Class<?>[] paramClasses = constructor.getParameterTypes();
+                Object[] params = new Object[paramClasses.length];
+                int i = 0;
+                for (Class<?> paramClass : paramClasses) {
+                    String paramClassName = StringUtil.firstLetterToLower(paramClass.getSimpleName());
 
-                for (Class<?> cfgClass : classesInConfig) {
-                    if (paramClass.isAssignableFrom(cfgClass)) {
-                        params[i] = getBean(paramClassName);
-                        i++;
+                    for (Class<?> cfgClass : classesInConfig) {
+                        if (paramClass.isAssignableFrom(cfgClass)) {
+                            params[i] = getBean(paramClassName);
+                            i++;
+                        }
                     }
                 }
+                if (i < params.length) {
+                    continue;
+                }
+                if (params.length > 0) {
+                    params = Stream.of(params)
+                            .map(o -> Proxy.isProxyClass(o.getClass())
+                                    ? ((BenchmarkInvocationHandler) Proxy.getInvocationHandler(o)).getOriginalObject()
+                                    : o)
+                            .toArray();
+                    bean = constructor.newInstance(params);
+                    return;
+                } else {
+                    break;
+                }
             }
-            if (i < params.length) {
-                continue;
-            }
-            if (params.length > 0) {
-                params = Stream.of(params).map(o -> Proxy.isProxyClass(o.getClass()) ?
-                        ((BenchmarkInvocationHandler) Proxy.getInvocationHandler(o)).getOriginalObject() : o)
-                        .toArray();
-                return (T) constructor.newInstance(params);
-            } else {
-                break;
-            }
+            bean = clazz.newInstance();
         }
-        return (T) clazz.newInstance();
-    }
 
-    private <T> T createProxy(T bean) {
-        Method[] methods = bean.getClass().getMethods();
-        for (Method method : methods) {
-            if (method.getAnnotations().length > 0) {
-                return (T) Proxy.newProxyInstance(bean.getClass().getClassLoader(),
-                        bean.getClass().getInterfaces(),
-                        new BenchmarkInvocationHandler(bean));
+        public void callPostCreateMethod() throws Exception {
+            for (Method method : clazz.getMethods()) {
+                if (method.isAnnotationPresent(PostConstructBean.class)) {
+                    method.invoke(bean);
+                }
             }
         }
-        return bean;
-    }
 
-    private void callPostConstructBean(Object bean) throws Exception {
-        Class<?> clazz = bean.getClass();
-        for (Method method : clazz.getMethods()) {
-            if (method.isAnnotationPresent(PostConstructBean.class)) {
-                method.invoke(bean);
+        public void callInitMethod() throws Exception {
+            Method method;
+            try {
+                method = clazz.getMethod("init");
+            } catch (NoSuchMethodException e) {
+                return;
+            }
+            method.invoke(bean);
+        }
+
+        public void createBeanProxy() {
+            Method[] methods = bean.getClass().getMethods();
+            for (Method method : methods) {
+                if (method.getAnnotations().length > 0) {
+                    bean = Proxy.newProxyInstance(bean.getClass().getClassLoader(),
+                            bean.getClass().getInterfaces(),
+                            new BenchmarkInvocationHandler(bean));
+                    break;
+                }
             }
         }
-    }
 
-    private void callInitMethod(Object bean) throws Exception {
-        Class<?> clazz = bean.getClass();
-        Method method;
-        try {
-            method = clazz.getMethod("init");
-        } catch (NoSuchMethodException e) {
-            return;
+        public Object build() throws Exception {
+            return bean;
         }
-        method.invoke(bean);
     }
 }
