@@ -1,7 +1,5 @@
 package com.avseredyuk.infrastructure;
 
-import com.avseredyuk.repository.Benchmark;
-import com.avseredyuk.repository.MemoryTweetRepository;
 import com.avseredyuk.repository.PostConstructBean;
 import com.avseredyuk.util.StringUtil;
 
@@ -10,9 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -43,7 +39,7 @@ public class ApplicationContext implements Context {
         return bean;
     }
 
-    private <T> T instantiate(String beanName) throws Exception{
+    private <T> T instantiate(String beanName) throws Exception {
         Class<?> clazz = config.getImpl(beanName);
         if (clazz == null) {
             throw new RuntimeException("Bean not found");
@@ -65,7 +61,6 @@ public class ApplicationContext implements Context {
                         i++;
                     }
                 }
-
             }
             if (i < params.length) {
                 continue;

@@ -4,7 +4,6 @@ import com.avseredyuk.domain.Tweet;
 import com.avseredyuk.domain.TweetService;
 import com.avseredyuk.domain.User;
 import com.avseredyuk.infrastructure.*;
-import com.avseredyuk.repository.MemoryTweetRepository;
 import com.avseredyuk.repository.TweetRepository;
 
 /**
