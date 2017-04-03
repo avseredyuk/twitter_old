@@ -3,6 +3,7 @@ package com.avseredyuk.infrastructure;
 import com.avseredyuk.repository.Benchmark;
 import com.avseredyuk.repository.MemoryTweetRepository;
 import com.avseredyuk.repository.PostConstructBean;
+import com.avseredyuk.util.StringUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -56,9 +57,7 @@ public class ApplicationContext implements Context {
             Object[] params = new Object[paramClasses.length];
             int i = 0;
             for (Class<?> paramClass : paramClasses) {
-                String paramClassName = paramClass.getSimpleName();
-                paramClassName = Character.toLowerCase(paramClassName.charAt(0)) +
-                        (paramClassName.length() > 1 ? paramClassName.substring(1) : "");
+                String paramClassName = StringUtil.firstLetterToLower(paramClass.getSimpleName());
 
                 for (Class<?> cfgClass : classesInConfig) {
                     if (paramClass.isAssignableFrom(cfgClass)) {
