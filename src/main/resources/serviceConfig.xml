@@ -4,6 +4,8 @@
        xsi:schemaLocation = "http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <bean id = "tweetRepository" class = "com.avseredyuk.repository.MemoryTweetRepository" init-method="initialize"/>
+    <bean id = "tweetService" class = "com.avseredyuk.domain.TweetService">
+        <constructor-arg ref="tweetRepository"/>
+    </bean>
 
 </beans>
