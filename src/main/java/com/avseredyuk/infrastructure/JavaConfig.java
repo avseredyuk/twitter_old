@@ -1,6 +1,6 @@
 package com.avseredyuk.infrastructure;
 
-import com.avseredyuk.domain.TweetService;
+import com.avseredyuk.domain.SimpleTweetService;
 import com.avseredyuk.domain.User;
 import com.avseredyuk.repository.MemoryTweetRepository;
 
@@ -16,7 +16,7 @@ public class JavaConfig implements Config {
 
     {
         classes.put("tweetRepository", MemoryTweetRepository.class);
-        classes.put("tweetService", TweetService.class);
+        classes.put("tweetService", SimpleTweetService.class);
         classes.put("userAdmin", User.class);
     }
 

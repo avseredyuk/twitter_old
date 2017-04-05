@@ -1,10 +1,7 @@
 package com.avseredyuk;
 
-import com.avseredyuk.domain.Tweet;
-import com.avseredyuk.domain.TweetService;
-import com.avseredyuk.domain.User;
+import com.avseredyuk.domain.SimpleTweetService;
 import com.avseredyuk.infrastructure.*;
-import com.avseredyuk.repository.TweetRepository;
 
 /**
  * Hello world!
@@ -12,7 +9,7 @@ import com.avseredyuk.repository.TweetRepository;
  *
  * getconstructor args
  * CAN BE CREATED BY IoC:
- * TweetService(TweetRepository)
+ * SimpleTweetService(TweetRepository)
  *  * addTwitter()
  *  * getTwitters
  */
@@ -22,7 +19,7 @@ public class TwitterRunner
 
         Context ctx = new ApplicationContext(new JavaConfig());
 
-        TweetService tweetService = ctx.getBean("tweetService");
+        SimpleTweetService tweetService = ctx.getBean("tweetService");
         tweetService.doSomething();
 
 //        User user = ctx.getBean("userAdmin");

@@ -4,8 +4,10 @@
        xsi:schemaLocation = "http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <bean id = "tweetService" class = "com.avseredyuk.domain.TweetService">
+    <bean id = "tweetService" class = "com.avseredyuk.domain.SimpleTweetService">
         <constructor-arg ref="tweetRepository"/>
     </bean>
+
+    <bean name="tweet" class="com.avseredyuk.domain.Tweet" scope="prototype"/>
 
 </beans>

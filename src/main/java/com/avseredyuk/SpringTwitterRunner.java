@@ -1,7 +1,7 @@
 package com.avseredyuk;
 
+import com.avseredyuk.domain.SimpleTweetService;
 import com.avseredyuk.domain.Tweet;
-import com.avseredyuk.domain.TweetService;
 import com.avseredyuk.repository.TweetRepository;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class SpringTwitterRunner {
     public static void main(String[] args) {
         ConfigurableApplicationContext repoContext =
-                new ClassPathXmlApplicationContext(new String[]{"spring.xml"});
+                new ClassPathXmlApplicationContext(new String[]{"repoContext.xml"});
 
         Stream.of(repoContext.getBeanDefinitionNames())
                 .map(repoContext.getBeanFactory()::getBeanDefinition)
@@ -26,15 +26,18 @@ public class SpringTwitterRunner {
 
 
         ConfigurableApplicationContext serviceContext =
-                new ClassPathXmlApplicationContext(new String[]{"serviceConfig.xml"}, repoContext);
+                new ClassPathXmlApplicationContext(new String[]{"serviceContext.xml"}, repoContext);
 
         Stream.of(serviceContext.getBeanDefinitionNames())
                 .map(serviceContext.getBeanFactory()::getBeanDefinition)
                 .forEach(System.out::println);
 
-        TweetService tweetService = (TweetService)serviceContext.getBean("tweetService");
+        SimpleTweetService tweetService = (SimpleTweetService)serviceContext.getBean("tweetService");
+        tweetService.save(new Tweet(null, "new text"));
         tweetService.doSomething();
 
+        repoContext.close();
+        serviceContext.close();
 
 
     }
