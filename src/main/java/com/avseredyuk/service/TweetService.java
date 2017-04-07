@@ -1,4 +1,7 @@
-package com.avseredyuk.domain;
+package com.avseredyuk.service;
+
+import com.avseredyuk.domain.Tweet;
+import com.avseredyuk.domain.User;
 
 /**
  * Created by Anton_Serediuk on 4/5/2017.

@@ -11,8 +11,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
-        BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition("tweetRepository");
-        beanDefinition.setScope("prototype");
+//        BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition("tweetRepository");
+//        beanDefinition.setScope("prototype");
 
 
     }

@@ -1,6 +1,6 @@
 package com.avseredyuk.infrastructure;
 
-import com.avseredyuk.domain.SimpleTweetService;
+import com.avseredyuk.service.SimpleTweetService;
 import com.avseredyuk.domain.User;
 import com.avseredyuk.repository.MemoryTweetRepository;
 

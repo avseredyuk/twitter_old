@@ -1,6 +1,6 @@
 package com.avseredyuk;
 
-import com.avseredyuk.domain.SimpleTweetService;
+import com.avseredyuk.service.SimpleTweetService;
 import com.avseredyuk.infrastructure.*;
 
 /**
@@ -20,7 +20,7 @@ public class TwitterRunner
         Context ctx = new ApplicationContext(new JavaConfig());
 
         SimpleTweetService tweetService = ctx.getBean("tweetService");
-        tweetService.doSomething();
+//        tweetService.doSomething();
 
 //        User user = ctx.getBean("userAdmin");
 //        TweetRepository tweetRepository = ctx.getBean("tweetRepository");
