@@ -35,6 +35,15 @@ public class SpringTwitterRunner {
         SimpleTweetService tweetService = (SimpleTweetService)serviceContext.getBean("tweetService");
         tweetService.save(new Tweet(null, "new text"));
         tweetService.doSomething();
+        System.out.println(tweetService);
+
+        System.out.println(serviceContext.getBean("temp"));
+
+        System.out.println(repoContext.getBean("tweetRepository"));
+        System.out.println(repoContext.getBean("tweetRepository"));
+        System.out.println(repoContext.getBean("tweetRepository"));
+
+
 
         repoContext.close();
         serviceContext.close();

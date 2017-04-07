@@ -8,9 +8,8 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * Created by Anton_Serediuk on 3/31/2017.
  */
-public class SimpleTweetService implements TweetService, ApplicationContextAware {
+public class SimpleTweetService implements TweetService {
     private TweetRepository tweetRepository;
-    private ApplicationContext applicationContext;
 
     public SimpleTweetService(TweetRepository tweetRepository) {
         this.tweetRepository = tweetRepository;
@@ -20,13 +19,13 @@ public class SimpleTweetService implements TweetService, ApplicationContextAware
     public Tweet createTweet(User user, String text) {
         Tweet newTweet = createEmptyTweet();
         newTweet.setText(text);
-//        newTweet.setUser(user);
         return newTweet;
     }
 
-    private Tweet createEmptyTweet() {
-        return (Tweet) applicationContext.getBean("tweet");
+    Tweet createEmptyTweet() {
+        return null;
     }
+
 
     @Override
     public Iterable findAll() {
@@ -47,8 +46,4 @@ public class SimpleTweetService implements TweetService, ApplicationContextAware
         }
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 }

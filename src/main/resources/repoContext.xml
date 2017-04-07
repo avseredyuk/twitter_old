@@ -4,6 +4,12 @@
        xsi:schemaLocation = "http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <bean id = "tweetRepository" class = "com.avseredyuk.repository.MemoryTweetRepository" init-method="initialize"/>
+    <bean name="tweetRepository" class="com.avseredyuk.repository.MemoryTweetRepository" init-method="initialize"/>
+
+    <bean name="temp" class="com.avseredyuk.infrastructure.MyFactoryBean"/>
+
+    <bean class="com.avseredyuk.infrastructure.BenchmarkBeanPostprocessor"/>
+
+    <bean class="com.avseredyuk.infrastructure.MyBeanFactoryPostProcessor"/>
 
 </beans>

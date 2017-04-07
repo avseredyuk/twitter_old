@@ -4,8 +4,8 @@
        xsi:schemaLocation = "http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <bean id = "tweetService" class = "com.avseredyuk.domain.SimpleTweetService">
-        <constructor-arg ref="tweetRepository"/>
+    <bean id = "tweetService" class = "com.avseredyuk.domain.SimpleTweetService" autowire="constructor" lazy-init="true">
+        <lookup-method name="createEmptyTweet" bean="tweet"/>
     </bean>
 
     <bean name="tweet" class="com.avseredyuk.domain.Tweet" scope="prototype"/>
