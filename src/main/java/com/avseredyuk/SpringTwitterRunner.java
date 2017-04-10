@@ -1,5 +1,6 @@
 package com.avseredyuk;
 
+import com.avseredyuk.domain.User;
 import com.avseredyuk.service.SimpleTweetService;
 import com.avseredyuk.domain.Tweet;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -44,14 +45,20 @@ public class SpringTwitterRunner {
         ConfigurableApplicationContext serviceContext =
                 new ClassPathXmlApplicationContext("serviceContext.xml");
 
-        Stream.of(serviceContext.getBeanDefinitionNames())
-                .map(serviceContext.getBeanFactory()::getBeanDefinition)
-                .forEach(System.out::println);
+//        Stream.of(serviceContext.getBeanDefinitionNames())
+//                .map(serviceContext.getBeanFactory()::getBeanDefinition)
+//                .forEach(System.out::println);
 
         SimpleTweetService tweetService = (SimpleTweetService) serviceContext.getBean("tweetService");
-        tweetService.save(new Tweet(null, "1111"));
-        tweetService.save(new Tweet(null, "2222"));
-        System.out.println(tweetService);
+
+        User user1 = new User("Vasya");
+        User user2 = new User("Petya");
+
+        tweetService.save(new Tweet(user1, "Hello from Vasyliy"));
+        tweetService.save(new Tweet(user2, "Petya rulez!!!"));
+
+
+//        System.out.println(tweetService);
         System.out.println(tweetService.findAll());
 
 //

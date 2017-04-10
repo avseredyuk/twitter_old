@@ -3,6 +3,8 @@ package com.avseredyuk.domain;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by Anton_Serediuk on 3/30/2017.
  */
@@ -12,8 +14,11 @@ public class Tweet {
     public static final int TWEET_MAX_TEXT_LENGTH = 140;
     private User user;
     private String text;
-    private Integer likesCount;
-    private Integer retweetCount;
+    //todo
+    private List<User> retweets;
+    private boolean isRetweet;
+    //todo
+    private List<User> likes;
 
     public Tweet() {
     }
@@ -21,22 +26,6 @@ public class Tweet {
     public Tweet(User user, String text) {
         this.user = user;
         this.text = text;
-    }
-
-    public Integer getLikesCount() {
-        return likesCount;
-    }
-
-    public void setLikesCount(Integer likesCount) {
-        this.likesCount = likesCount;
-    }
-
-    public Integer getRetweetCount() {
-        return retweetCount;
-    }
-
-    public void setRetweetCount(Integer retweetCount) {
-        this.retweetCount = retweetCount;
     }
 
     public User getUser() {

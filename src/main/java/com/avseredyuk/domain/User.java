@@ -1,11 +1,15 @@
 package com.avseredyuk.domain;
 
+import java.util.List;
+
 /**
  * Created by Anton_Serediuk on 3/30/2017.
  */
 public class User {
     private Integer id;
     private String name;
+    //todo
+    private List<Tweet> ownRetweets;
 
     public User(String name) {
         this.name = name;

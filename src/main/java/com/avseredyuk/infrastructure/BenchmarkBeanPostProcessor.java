@@ -6,7 +6,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 /**
  * Created by Anton_Serediuk on 4/5/2017.
  */
-public class BenchmarkBeanPostprocessor implements BeanPostProcessor {
+public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
         System.out.println(s);
