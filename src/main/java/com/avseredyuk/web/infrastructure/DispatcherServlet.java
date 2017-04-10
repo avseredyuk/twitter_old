@@ -3,11 +3,13 @@ package com.avseredyuk.web.infrastructure;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.stream.Stream;
 
 /**
  * Created by Anton_Serediuk on 4/10/2017.
@@ -17,13 +19,27 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        String webContextName = getInitParameter("contextConfigLocation");
-        webContext = new ClassPathXmlApplicationContext(webContextName);
+        ServletContext servletContext = getServletContext();
+        String webContextNames = servletContext.getInitParameter("contextConfigLocation");
+        String[] contextNames = webContextNames.split(" ");
+//        ConfigurableApplicationContext[] ctxs = Stream.of(contextNames)
+//                .map(s -> (ConfigurableApplicationContext) servletContext.getAttribute(s))
+//                .toArray(ConfigurableApplicationContext[]::new);
+        webContext = new ClassPathXmlApplicationContext();
+
+//        ConfigurableApplicationContext[] ctxs =
+//                new ConfigurableApplicationContext[contextNames.length];
+//        for (String contextName : contextNames) {
+//        }
+
+//        String webContextName = getInitParameter("contextConfigLocation");
+//        webContext = new ClassPathXmlApplicationContext(webContextName);
+//        getServletContext().setAttribute();
     }
 
     @Override
     public void destroy() {
-        webContext.close();
+//        webContext.close();
     }
 
     @Override
