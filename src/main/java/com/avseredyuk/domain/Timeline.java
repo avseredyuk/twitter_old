@@ -7,8 +7,8 @@ import java.util.List;
  * Created by Anton_Serediuk on 4/10/2017.
  */
 public class Timeline {
-    User user;
-    List<Tweet> tweets;
+    private User user;
+    private List<Tweet> tweets;
 
     public Timeline(List<Tweet> tweets, User user) {
         this.tweets = new ArrayList<>(tweets);

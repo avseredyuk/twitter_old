@@ -1,11 +1,13 @@
 package com.avseredyuk.domain;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by Anton_Serediuk on 3/30/2017.
  */
 @Component
+@Scope("prototype")
 public class Tweet {
     public static final int TWEET_MAX_TEXT_LENGTH = 140;
     private User user;
@@ -20,6 +22,7 @@ public class Tweet {
         this.user = user;
         this.text = text;
     }
+
     public Integer getLikesCount() {
         return likesCount;
     }
