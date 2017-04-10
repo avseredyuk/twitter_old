@@ -10,6 +10,4 @@
 
     <context:component-scan base-package="com.avseredyuk"/>
 
-    <bean name="tweet" class="com.avseredyuk.domain.Tweet" scope="prototype"/>
-
 </beans>

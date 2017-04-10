@@ -20,7 +20,7 @@ public class SimpleTweetService implements TweetService {
     }
 
     @Override
-    public Tweet createTweet(User user, String text) {
+    public Tweet create(User user, String text) {
         Tweet newTweet = createEmptyTweet();
         newTweet.setText(text);
         return newTweet;
@@ -37,8 +37,13 @@ public class SimpleTweetService implements TweetService {
     }
 
     @Override
-    public void save(Tweet tweet) {
-        tweetRepository.save(tweet);
+    public boolean save(Tweet tweet) {
+        if (tweet.getText().length() <= Tweet.TWEET_MAX_TEXT_LENGTH) {
+            tweetRepository.add(tweet);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

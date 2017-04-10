@@ -25,8 +25,6 @@ import java.util.stream.Stream;
 
 public class SpringTwitterRunner {
     public static void main(String[] args) {
-
-
 //        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 //        ctx.refresh();
 //        System.out.println(ctx.getBean("tweet"));
@@ -43,7 +41,6 @@ public class SpringTwitterRunner {
 //        tweetRepository.findAll().forEach(System.out::println);
 
 
-
         ConfigurableApplicationContext serviceContext =
                 new ClassPathXmlApplicationContext("serviceContext.xml");
 
@@ -52,8 +49,8 @@ public class SpringTwitterRunner {
                 .forEach(System.out::println);
 
         SimpleTweetService tweetService = (SimpleTweetService) serviceContext.getBean("tweetService");
-        tweetService.save(new Tweet(null, "new text"));
-
+        tweetService.save(new Tweet(null, "1111"));
+        tweetService.save(new Tweet(null, "2222"));
         System.out.println(tweetService);
         System.out.println(tweetService.findAll());
 
@@ -67,6 +64,7 @@ public class SpringTwitterRunner {
 //
 //
 //        repoContext.close();
+
 //        serviceContext.close();
 
 
