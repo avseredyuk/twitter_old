@@ -20,26 +20,16 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
-        String webContextNames = servletContext.getInitParameter("contextConfigLocation");
-        String[] contextNames = webContextNames.split(" ");
-//        ConfigurableApplicationContext[] ctxs = Stream.of(contextNames)
-//                .map(s -> (ConfigurableApplicationContext) servletContext.getAttribute(s))
-//                .toArray(ConfigurableApplicationContext[]::new);
-        webContext = new ClassPathXmlApplicationContext();
+        ConfigurableApplicationContext parentContext =
+                (ConfigurableApplicationContext) servletContext.getAttribute("parentContext");
 
-//        ConfigurableApplicationContext[] ctxs =
-//                new ConfigurableApplicationContext[contextNames.length];
-//        for (String contextName : contextNames) {
-//        }
-
-//        String webContextName = getInitParameter("contextConfigLocation");
-//        webContext = new ClassPathXmlApplicationContext(webContextName);
-//        getServletContext().setAttribute();
+        String webContextName = servletContext.getInitParameter("myWebContext");
+        webContext = new ClassPathXmlApplicationContext(new String[] {webContextName}, parentContext);
     }
 
     @Override
     public void destroy() {
-//        webContext.close();
+        webContext.close();
     }
 
     @Override

@@ -10,20 +10,22 @@ import javax.servlet.ServletContextListener;
 /**
  * Created by Anton_Serediuk on 4/10/2017.
  */
-public class ApplicationContextListener implements ServletContextListener{
+public class ApplicationContextListener implements ServletContextListener {
+
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
         String webContextNames = servletContext.getInitParameter("contextConfigLocation");
         String[] contextNames = webContextNames.split(" ");
-        for (String contextName : contextNames) {
-            ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(contextName);
-            servletContext.setAttribute(contextName, ctx);
-        }
+        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(contextNames);
+        servletContext.setAttribute("parentContext", ctx);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-
+        ConfigurableApplicationContext ctx =
+                (ConfigurableApplicationContext)
+                        servletContextEvent.getServletContext().getAttribute("parentContext");
+        ctx.close();
     }
 }

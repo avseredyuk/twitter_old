@@ -42,24 +42,24 @@ public class SpringTwitterRunner {
 //        tweetRepository.findAll().forEach(System.out::println);
 
 
-        ConfigurableApplicationContext serviceContext =
-                new ClassPathXmlApplicationContext("serviceContext.xml");
-
-//        Stream.of(serviceContext.getBeanDefinitionNames())
-//                .map(serviceContext.getBeanFactory()::getBeanDefinition)
-//                .forEach(System.out::println);
-
-        SimpleTweetService tweetService = (SimpleTweetService) serviceContext.getBean("tweetService");
-
-        User user1 = new User("Vasya");
-        User user2 = new User("Petya");
-
-        tweetService.save(new Tweet(user1, "Hello from Vasyliy"));
-        tweetService.save(new Tweet(user2, "Petya rulez!!!"));
-
-
-//        System.out.println(tweetService);
-        System.out.println(tweetService.findAll());
+//        ConfigurableApplicationContext serviceContext =
+//                new ClassPathXmlApplicationContext("serviceContext.xml");
+//
+////        Stream.of(serviceContext.getBeanDefinitionNames())
+////                .map(serviceContext.getBeanFactory()::getBeanDefinition)
+////                .forEach(System.out::println);
+//
+//        SimpleTweetService tweetService = (SimpleTweetService) serviceContext.getBean("tweetService");
+//
+//        User user1 = new User("Vasya");
+//        User user2 = new User("Petya");
+//
+//        tweetService.save(new Tweet(user1, "Hello from Vasyliy"));
+//        tweetService.save(new Tweet(user2, "Petya rulez!!!"));
+//
+//
+////        System.out.println(tweetService);
+//        System.out.println(tweetService.findAll());
 
 //
 //        System.out.println(serviceContext.getBean("temp"));
