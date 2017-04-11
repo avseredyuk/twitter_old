@@ -1,7 +1,5 @@
 package com.avseredyuk.infrastructure;
 
-import com.avseredyuk.repository.PostConstructBean;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

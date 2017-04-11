@@ -32,7 +32,7 @@ public class SimpleTweetService implements TweetService {
     }
 
     @Override
-    public Iterable findAll() {
+    public Iterable<Tweet> findAll() {
         return tweetRepository.findAll();
     }
 

@@ -8,6 +8,6 @@ import com.avseredyuk.domain.User;
  */
 public interface TweetService {
     Tweet create(User user, String text);
-    Iterable findAll();
+    Iterable<Tweet> findAll();
     boolean save(Tweet tweet);
 }

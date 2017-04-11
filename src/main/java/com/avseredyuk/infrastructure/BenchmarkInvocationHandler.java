@@ -1,7 +1,5 @@
 package com.avseredyuk.infrastructure;
 
-import com.avseredyuk.repository.Benchmark;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.stream.Collectors;
