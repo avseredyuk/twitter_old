@@ -14,12 +14,12 @@ import static org.junit.Assert.*;
  */
 public class SimpleTweetServiceTest {
     private static ConfigurableApplicationContext serviceContext;
-    private static SimpleTweetService tweetService;
+    private static TweetService tweetService;
 
     @BeforeClass
     public static void setUp() throws Exception {
         serviceContext = new ClassPathXmlApplicationContext("serviceContext.xml");
-        tweetService = (SimpleTweetService) serviceContext.getBean("tweetService");
+        tweetService = (TweetService) serviceContext.getBean("tweetService");
     }
 
     @Test

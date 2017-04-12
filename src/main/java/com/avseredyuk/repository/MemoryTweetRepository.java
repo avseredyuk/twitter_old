@@ -3,7 +3,6 @@ package com.avseredyuk.repository;
 import com.avseredyuk.domain.Tweet;
 import com.avseredyuk.domain.User;
 import com.avseredyuk.infrastructure.Benchmark;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -25,14 +24,20 @@ public class MemoryTweetRepository implements TweetRepository {
     }
 
     @Override
+    @Benchmark
     public void add(Tweet tweet) {
         tweets.add(tweet);
     }
 
     @Override
-    @Benchmark
     public Iterable<Tweet> findAll() {
         return new ArrayList<>(tweets);
     }
 
+    @Override
+    public Iterable<Tweet> findAllByUser(User user) {
+        return tweets.stream()
+                .filter(t -> user.getName().equals(t.getUser().getName()))
+                .collect(Collectors.toList());
+    }
 }

@@ -9,5 +9,6 @@ import com.avseredyuk.domain.User;
 public interface TweetService {
     Tweet create(User user, String text);
     Iterable<Tweet> findAll();
+    Iterable<Tweet> findAllByUser(User user);
     boolean save(Tweet tweet);
 }

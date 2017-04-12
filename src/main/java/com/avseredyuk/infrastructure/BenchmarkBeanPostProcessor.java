@@ -17,9 +17,13 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
+        System.out.println("CLASS: " + o.getClass().getCanonicalName());
         Method[] methods = o.getClass().getMethods();
         for (Method method : methods) {
+            System.out.println("  METHOD: " + method.getName() + "(" +
+                    method.isAnnotationPresent(Benchmark.class) + ")");
             if (method.isAnnotationPresent(Benchmark.class)) {
+                System.out.println("     PROXIFIED");
                 o = Proxy.newProxyInstance(o.getClass().getClassLoader(),
                         o.getClass().getInterfaces(),
                         new BenchmarkInvocationHandler(o));

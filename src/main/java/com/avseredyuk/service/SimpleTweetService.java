@@ -37,6 +37,11 @@ public class SimpleTweetService implements TweetService {
     }
 
     @Override
+    public Iterable<Tweet> findAllByUser(User user) {
+        return tweetRepository.findAllByUser(user);
+    }
+
+    @Override
     public boolean save(Tweet tweet) {
         if (tweet.getText().length() <= Tweet.TWEET_MAX_TEXT_LENGTH) {
             tweetRepository.add(tweet);
